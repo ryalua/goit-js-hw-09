@@ -1,5 +1,6 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import { Notify } from "notiflix";
 
 const refs = {
     dateInput: document.querySelector('input'),
@@ -16,7 +17,7 @@ refs.startBtn.addEventListener('click', handledStart);
 let setDate = null;
 let currentDate = new Date;
 let intervalId = null;
-let deltaZerro = null;
+
 const options = {
     enableTime: true,
     time_24hr: true,
@@ -33,7 +34,7 @@ function handledDateInput(event) {
             
     if (setDate < currentDate) {
         refs.startBtn.disabled = true;
-        alert("Please choose a date in the future");
+        Notify.failure("Please choose a date in the future");
         return;
     }
     refs.startBtn.disabled = false;
