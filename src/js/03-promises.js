@@ -19,8 +19,8 @@ function handledFormSubmit(event) {
   for (let i = 1; i <= amountPromises; i += 1) {
     
     createPromise(i, firstDelay)
-      .then((position, delay) => Notify.success(`Fulfilled promise ${i} in ${delay}ms`))
-      .catch((position, delay) => Notify.failure(`Rejected promise ${i} in ${delay}ms`));
+      .then(value => Notify.success(value))
+      .catch(error => Notify.failure(error));
     
     firstDelay += stepDelay;
     
@@ -32,9 +32,9 @@ function createPromise(position, delay) {
   const promise = new Promise((resolve, reject) => {
     setTimeout(() => {
       if (shouldResolve) {
-        resolve(position, delay);
+        resolve(`Fulfilled promise ${position} in ${delay}ms`);
       } else {
-        reject(position, delay);
+        reject(`Rejected promise ${position} in ${delay}ms`);
       }
     }, delay);
   });
