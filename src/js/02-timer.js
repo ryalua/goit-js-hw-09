@@ -1,6 +1,7 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import { Notify } from "notiflix";
+// import "./../css/02-timer.css";
 
 const refs = {
     dateInput: document.querySelector('input'),
