@@ -1,11 +1,11 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import { Notify } from "notiflix";
-// import "./../css/02-timer.css";
 
 const refs = {
     dateInput: document.querySelector('input'),
     startBtn: document.querySelector('[data-start]'),
+
     fieldDays: document.querySelector('[data-days]'), 
     fieldHours: document.querySelector('[data-hours]'),
     fieldMinutes: document.querySelector('[data-minutes]'),
@@ -42,15 +42,12 @@ function handledStart() {
         const currentTime = new Date;
         const deltaTime = setDate - currentTime;
         const { days, hours, minutes, seconds } = convertMs(deltaTime)
-        
-        updateTimer({ days, hours, minutes, seconds });
-        
-        if (deltaTime < 0) {
+        if(deltaTime > 0) {
+            updateTimer({ days, hours, minutes, seconds });
+        } else {
             clearInterval(intervalId);
-            return;
         };
     }, 1000);
-    
 };
 
 function addLeadingZero(value) {
@@ -72,13 +69,13 @@ function convertMs(ms) {
   const day = hour * 24;
 
   // Remaining days
-  const days = addLeadingZero(Math.floor(ms / day));
+  const days = Math.floor(ms / day);
   // Remaining hours
-  const hours = addLeadingZero(Math.floor((ms % day) / hour));
+  const hours = Math.floor((ms % day) / hour);
   // Remaining minutes
-  const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
+  const minutes = Math.floor(((ms % day) % hour) / minute);
   // Remaining seconds
-  const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return { days, hours, minutes, seconds };
 };
