@@ -11,7 +11,6 @@ const refs = {
     fieldSeconds: document.querySelector('[data-seconds]'),
 }
 
-refs.dateInput.addEventListener('input', handledDateInput);
 refs.startBtn.addEventListener('click', handledStart);
 
 let setDate = null;
@@ -21,24 +20,20 @@ let intervalId = null;
 const options = {
     enableTime: true,
     time_24hr: true,
-    // defaultDate: new Date(),
+    defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-        console.log(selectedDates[0]);
+        setDate = selectedDates[0]; 
+        if (setDate < currentDate) {
+            refs.startBtn.disabled = true;
+            Notify.failure("Please choose a date in the future");
+            return;
+        } else {
+            refs.startBtn.disabled = false;
+        };
     },
 };
-
-function handledDateInput(event) {
-    flatpickr(refs.dateInput, options);
-    setDate = new Date(refs.dateInput.value); 
-            
-    if (setDate < currentDate) {
-        refs.startBtn.disabled = true;
-        Notify.failure("Please choose a date in the future");
-        return;
-    }
-    refs.startBtn.disabled = false;
-};
+flatpickr(refs.dateInput, options);
 
 function handledStart() {
     refs.startBtn.disabled = true;
@@ -49,7 +44,7 @@ function handledStart() {
         
         updateTimer({ days, hours, minutes, seconds });
         
-        if (deltaTime <= 1000) {
+        if (deltaTime < 0) {
             clearInterval(intervalId);
             return;
         };
@@ -62,10 +57,10 @@ function addLeadingZero(value) {
 };
 
 function updateTimer({ days, hours, minutes, seconds }) {
-    refs.fieldDays.textContent = `${days}`;
-    refs.fieldHours.textContent = `${hours}`;
-    refs.fieldMinutes.textContent =`${minutes}`;
-    refs.fieldSeconds.textContent = `${seconds}`;
+    refs.fieldDays.textContent = addLeadingZero(days);
+    refs.fieldHours.textContent = addLeadingZero(hours);
+    refs.fieldMinutes.textContent =addLeadingZero(minutes);
+    refs.fieldSeconds.textContent = addLeadingZero(seconds);
 };
 
 function convertMs(ms) {
